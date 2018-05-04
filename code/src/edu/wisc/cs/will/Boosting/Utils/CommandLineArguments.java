@@ -205,7 +205,7 @@ public class CommandLineArguments {
 	private boolean printAllExamplesToo = false;
 	
 	public static final String testNegsToPosRatio = "testNegPosRatio";
-	private double testNegsToPosRatioVal = 2;
+	private double testNegsToPosRatioVal = -1;
 	public static final String testPosString      = "testPosString"; // Allow overriding of the default.
 	private String stringForTestsetPos = "pos";
 	public static final String testNegString      = "testNegString"; // Allow overriding of the default.

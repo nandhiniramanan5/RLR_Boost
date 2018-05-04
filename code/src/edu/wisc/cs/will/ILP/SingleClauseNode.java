@@ -938,7 +938,6 @@ public class SingleClauseNode extends SearchNode implements Serializable{
 				}
 			}
 		}
-
 		// NOTE: Must not compare negCoverage to theILPtask.minPrecision since the task of ILP is to add literals until precision is acceptable.
 		if (negCoverage < 0.0 && !tookTooLong) {
 			extraString = null; // Reset this whenever the coverage changes.

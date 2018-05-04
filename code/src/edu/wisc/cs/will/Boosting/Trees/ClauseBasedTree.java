@@ -46,6 +46,7 @@ public class ClauseBasedTree  {
 	 * @param ex - Example to be evaluated
 	 * @return the regression value. Note: This is the value for just ONE tree.
 	 */
+	//NR
 	public RegressionValueOrVector getRegressionValue(Example ex) {
 		RegressionValueOrVector val0 = null;									  
 		RegressionValueOrVector sum = null;
@@ -90,9 +91,8 @@ public class ClauseBasedTree  {
 					sum = new RegressionValueOrVector(sumVec);
 				}
 			}
-		}
-					   
-		sum.addValueOrVector(val0);									 
+		}					   
+//		sum.addValueOrVector(val0);									 
 		return sum;
 	}
 

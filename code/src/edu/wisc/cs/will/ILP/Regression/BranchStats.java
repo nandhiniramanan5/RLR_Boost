@@ -66,33 +66,37 @@ public class BranchStats {
 			lamda.setAsDouble(lam, 0,0);
 			lamda.setAsDouble(lam, 1,1);
 			lamda.setAsDouble(lam, 2,2);
-			covariance.setAsDouble(1, 0,0);
-			covariance.setAsDouble(sumOfNumGrounding_pos, 0,1);
-			covariance.setAsDouble(sumOfNumGrounding_neg, 0,2);
-			covariance.setAsDouble(sumOfNumGrounding_pos, 1,0);
-			covariance.setAsDouble(sumOfNumGroundingSquared_pos, 1,1);
-			covariance.setAsDouble(sumofNumGrounding_posAndNumGrounding_neg, 1,2);
-			covariance.setAsDouble(sumOfNumGrounding_neg, 2,0);
-			covariance.setAsDouble(sumofNumGrounding_posAndNumGrounding_neg, 2,1);
-			covariance.setAsDouble(sumOfNumGroundingSquared_neg, 2,2);
+			covariance.setAsDouble(1/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 0,0);
+			covariance.setAsDouble(sumOfNumGrounding_pos/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 0,1);
+			covariance.setAsDouble(sumOfNumGrounding_neg/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 0,2);
+			covariance.setAsDouble(sumOfNumGrounding_pos/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 1,0);
+			covariance.setAsDouble(sumOfNumGroundingSquared_pos/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 1,1);
+			covariance.setAsDouble(sumofNumGrounding_posAndNumGrounding_neg/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 1,2);
+			covariance.setAsDouble(sumOfNumGrounding_neg/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 2,0);
+			covariance.setAsDouble(sumofNumGrounding_posAndNumGrounding_neg/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 2,1);
+			covariance.setAsDouble(sumOfNumGroundingSquared_neg/(sumOfNumGrounding_pos+sumOfNumGrounding_neg), 2,2);
 			Matrix gradients = DenseMatrix.Factory.zeros(3,1);
 			gradients.setAsDouble(sumOfOutput, 0,0);
 			gradients.setAsDouble(sumOfOutputAndNumGrounding_pos, 1,0);
 			gradients.setAsDouble(sumOfOutputAndNumGrounding_neg, 2,0);
-			Matrix weights = DenseMatrix.Factory.zeros(3,1);
-			Matrix CT=covariance.transpose();
-			Matrix Prod = CT.mtimes(covariance);
-//			System.out.println("hi1:: "+Prod);
-			Matrix reg = Prod.plus(lamda);
-//			System.out.println("hi2:: "+reg);
-			Matrix inv = reg.pinv();
-			Matrix temp = inv.mtimes(CT);
-			Matrix finalm= temp.mtimes(gradients);
-			double t1,t2,t3;
+			Matrix Reg = covariance.plus(lamda);
+			Matrix inv = Reg.pinv();
+			Matrix finalm=inv.mtimes(gradients);
+			double t0 = 0.0;
+			double t1 =0.0;
+			double t2=0.0;			
 			w_0=finalm.getAsDouble(0,0);
 			w_1=finalm.getAsDouble(1,0);
 			w_2=finalm.getAsDouble(2,0);
-			result= (Math.pow((-sumOfOutput+w_0+w_1*sumOfNumGrounding_pos+w_2*sumOfNumGrounding_neg), 2)+(lam/2)*((w_0*w_0)+(w_1*w_1)+(w_2*w_2)));
+//			w_1= Math.exp(t1)/(Math.exp(t1)+Math.exp(t2));
+//			w_2= Math.exp(t2)/(Math.exp(t1)+Math.exp(t2));
+//			w_0= t0/(t0+t1+t2);
+//			w_1= t1/(t0+t1+t2);
+//			w_2= t2/(t0+t1+t2);
+//			System.out.println("matrix of weights :: "+w_0+" :: "+w_1+" :: "+w_2);
+			result= (Math.pow((-sumOfOutput+w_0+w_1*sumOfNumGrounding_pos+w_2*sumOfNumGrounding_neg), 2)+(lam)*((w_0*w_0)+(w_1*w_1)+(w_2*w_2)));
+//			result= (Math.pow((-sumOfOutput+w_0+w_1+w_2), 2)+(lam)*((w_0*w_0)+(w_1*w_1)+(w_2*w_2)));
+			
 			return result;
 }
 
@@ -149,9 +153,6 @@ public class BranchStats {
 			Utils.waitHere("Groundings squared with prob is 0??");
 		}
 		double lambda2 =  w_2;		
-		//if (lambda == 0) {
-		//	Utils.println(this.toAttrString());
-		//}
 		return lambda2;
 	}
 	public double getLambda(boolean useProbWeights) {
@@ -170,10 +171,6 @@ public class BranchStats {
 			//Utils.waitHere("Computations not correct for vector-based probabilities");
 			lambda = sumOfOutputAndNumGrounding_pos / sumOfNumGroundingSquaredWithProb;
 		}
-		
-		//if (lambda == 0) {
-		//	Utils.println(this.toAttrString());
-		//}
 		return lambda;
 	}
 	

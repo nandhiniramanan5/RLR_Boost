@@ -344,8 +344,8 @@ public class GraphDB {
 				{
 					temp = new HashMap<String,Double>();
 				}
-				System.out.println("----IN");
-				System.out.println(qs.get("cnt").asLiteral().getDouble()+" | "+qs.get("p").asResource().getLocalName()+" | "+(qs.get("o").asResource().getLocalName().isEmpty()?qs.get("o").asResource().toString().replace(ns, ""):qs.get("o").asResource().getLocalName()));
+//				System.out.println("----IN");
+//				System.out.println(qs.get("cnt").asLiteral().getDouble()+" | "+qs.get("p").asResource().getLocalName()+" | "+(qs.get("o").asResource().getLocalName().isEmpty()?qs.get("o").asResource().toString().replace(ns, ""):qs.get("o").asResource().getLocalName()));
 				temp.put(qs.get("p").asResource().getLocalName(),qs.get("cnt").asLiteral().getDouble());
 				InCount.put(qs.get("o").asResource().getLocalName().isEmpty()?qs.get("o").asResource().toString().replace(ns, ""):qs.get("o").asResource().getLocalName(), temp);
 				//predcountTableIn.put(qs.get("p").asResource().getLocalName(), predcountTableIn.getOrDefault(qs.get("p").asResource().getLocalName(), 0.0)+qs.get("cnt").asLiteral().getDouble());
@@ -672,7 +672,7 @@ public class GraphDB {
 				
 			}
 			//--------------
-			System.out.println(gvarL+"=============="+valL);
+//			System.out.println(gvarL+"=============="+valL);
 			
 			sb.append(String.format(". VALUES (%s) {(nmspc:%s)}", gvarL, valL));
 			sb.append("}");
@@ -693,7 +693,7 @@ public class GraphDB {
 		
 		public Double totalCount(String Gvar, String value, List<Literal> preds, String bitrep)
 		{
-//			System.out.println("preds"+preds);
+			//System.out.println("preds"+preds + "     Gvar ----  val"+Gvar+", "+value);
 			grnd = new Hashtable<String,String>();
 //			System.out.println(Gvar);
 			if(preds.size()==0)
@@ -791,7 +791,7 @@ public class GraphDB {
 			
 			String currvar = gvarlst[0];
 			induceCountTotal(currvar,vallst[0],qryModelIn,qryModelOut);
-//			System.out.println(countTable);
+//			System.out.println(Gvar+"****"+preds+"$$$"+value+"====="+countTable+"--"+final_var);
 //			System.out.println("Chaman: "+countTable.get(final_var));
 			return countTable.get(final_var);
 			//return 0.0;

@@ -980,7 +980,7 @@ double totalCount;
                             interiorNode.setTreeForFalse(falseBranch);
                         }
                         else {
-						//NR for MLN
+						//NR for RLR
                             getStdILPtheory().addMainClause(newClause, innerLoopTask.getInlineManager()); // The inline manager probably has already been sent, but send it again anyway.
                             if (learnMLNTheory && !learningTreeStructuredTheory) {
                             	double reg = bestNode.MLNRegressionForTrue();
@@ -994,8 +994,11 @@ double totalCount;
                             	getStdILPtheory().getClauses().get(len-1).setWeight0onSentence(reg0);
                             	// Update gradients
                             	for (Example eg : coveredPosExamplesThisCycle) {
+									double sig=Math.exp(reg+reg2+reg0)/(1+Math.exp(reg+reg2+reg0));
 									((RegressionRDNExample)eg).setOutputValue(((RegressionRDNExample)eg)
-											.getOutputValue() - (reg+reg2+reg0)); 
+											.getOutputValue() - (reg));
+//									System.out.println("Eg :: "+eg+" :: "+reg+" :: "+reg2+" :: "+reg0+" :: "+sig);
+									//reg+reg2+reg0
 								}
                             }
                         }

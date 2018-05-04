@@ -87,7 +87,7 @@ public class RegressionMLNModel extends RegressionTree {
 
 	@Override
 	protected RegressionValueOrVector getRegressionClauseWt(Clause clause, Example ex) {
-		
+		//NR
 		if (clause.getPositiveLiterals().size() != 1) {
 			Utils.error("Expected horn clause: " + clause);
 		}
@@ -145,15 +145,20 @@ public class RegressionMLNModel extends RegressionTree {
 		// If the clause head unifies with the example and it has no groundings, we want to evaluate the next
 		// clause. So return Nan. If the example doesn't unify with the head, then it doesn't matter if we return 0 or Nan, 
 		// as both will not have any impact on final regression value.
-		double neg=total-num;
-		val2.multiply(neg);
+//		double neg=total-num;
+//		val2.multiply(neg);
+//		val.multiply(num);
+//		RegressionValueOrVector valtotal=null;
+////		val2.multiply(total);
+//		valtotal=val2;
+//		valtotal.addValueOrVector(val);
+////		valtotal.addValueOrVector(val0);
+//		return valtotal;
+		if (num ==0) {
+			return null;
+		} 
 		val.multiply(num);
-		RegressionValueOrVector valtotal=null;
-//		val2.multiply(total);
-		valtotal=val2;
-		valtotal.addValueOrVector(val);
-//		valtotal.addValueOrVector(val0);
-		return valtotal;
+		return val;
 		
 		/*
 		LearnOneClause loc = setup.getInnerLooper();

@@ -148,6 +148,7 @@ public class RegressionInfoHolderForMLN extends RegressionInfoHolderForRDN {
 					//Utils.waitHere("args in exampleYYYYYYYYYYYYYYYYYYYYYYYYYYYY______________YYYYYYYY"+cl.getDefiniteClauseBody());
 					List<Literal> preds = caller.getClause().getDefiniteClauseBody();
 //					System.out.println(caller.getClause().getDefiniteClauseBody()+"---------"+RunBoostedRLR.gdb);
+					//System.out.println("caller :: "+caller.getClause().toString());
 					totalCount = RunBoostedRLR.gdb.totalCount(caller.getClause().getDefiniteClauseHead().getArguments().toString().replace("[", "").replace("]", "").replace(", ", ","),
 							posEx.asLiteral().getArguments().toString().replace("[", "").replace("]", "").replace(", ", ","), preds, bitrep);
 					}
@@ -164,9 +165,13 @@ public class RegressionInfoHolderForMLN extends RegressionInfoHolderForRDN {
 					totalCount=(double) 1;
 				}
 				neg= (long) (totalCount-num);
+//				System.out.println("totalCount :: "+ totalCount );
+//				System.out.println("num :: "+ num );
+				trueStats.addNumOutput(num, neg, output, weight, prob.getProbOfBeingTrue());	
 				
-				trueStats.addNumOutput(num, neg, output, weight, prob.getProbOfBeingTrue());		
 			}
+//			System.out.println("Pos :: "+trueStats.getsumOfNumGrounding_pos());
+//			System.out.println("Neg :: "+trueStats.getsumOfNumGrounding_neg());
 		}
 		RegressionInfoHolder totalFalseStats = caller.getTotalFalseBranchHolder() ;
 		if (totalFalseStats != null) {
